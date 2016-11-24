@@ -290,7 +290,11 @@ r3d:providerType rdf:type owl:ObjectProperty ;
 
 r3d:repositoryContact rdf:type owl:ObjectProperty ;
                       
-                      rdfs:label "repository contact"^^xsd:string .
+                      rdfs:label "repository contact"^^xsd:string ;
+                      
+                      rdfs:domain r3d:Respository ;
+                      
+                      rdfs:range foaf:Agent .
 
 
 
@@ -797,7 +801,9 @@ foaf:Document rdf:type owl:Class .
 
 ###  http://xmlns.com/foaf/0.1/Organization
 
-foaf:Organization rdf:type owl:Class .
+foaf:Organization rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf foaf:Agent .
 
 
 
