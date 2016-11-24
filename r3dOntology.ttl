@@ -1,556 +1,882 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix r3d: <http://www.re3data.org/schema/3-0#> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix msr: <http://purl.org/ms-rights#> .
+@prefix org: <http://www.w3.org/ns/org#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix r3d: <http://www.re3data.org/schema/3-0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
-@prefix lvont: <http://lexvo.org/ontology#> .
-@prefix msr: <http://purl.org/ms-rights#> .
-@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix org: <http://www.w3.org/ns/org#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix lvont: <http://lexvo.org/ontology#> .
+@prefix r3voc: <http://www.re3data.org/vocab/> .
 @prefix datacite: <http://purl.org/spar/datacite/> .
-@prefix r3voc: <http://www.re3data.org/vocab/> .		#TODO: change to specific vocabularies
 @prefix r3common: <http://www.re3data.org/vocab/common#> .
+@base <http://www.re3data.org/schema/3-0> .
 
-@base <http://www.re3data.org/schema/3-0#> .
+<http://www.re3data.org/schema/3-0> rdf:type owl:Ontology ;
+                                    
+                                    rdfs:label "re3data"@en ;
+                                    
+                                    vann:preferredNamespacePrefix "r3d" ;
+                                    
+                                    vann:preferredNamespaceUri "http://www.re3data.org/schema/3-0#" ;
+                                    
+                                    owl:versionInfo "3.0.0" ;
+                                    
+                                    dct:modified "2016-06-12" ;
+                                    
+                                    rdfs:comment "This ontology is the result of the transformation of re3data XML schema into an OWL ontology. Further information is available here:...."@en ;
+                                    
+                                    dct:publisher <http://re3data.org> ;
+                                    
+                                    dct:license <http://purl.org/NET/rdflicense/cc-by4.0> ;
+                                    
+                                    dct:creator <http://wiki.dbpedia.org/Association/Persons/Freudenberg> ;
+                                    
+                                    owl:imports <http://www.re3data.org/vocab> ,
+                                                r3voc:common ,
+                                                r3voc:dfg .
 
-<http://www.re3data.org/schema/3-0>
-    a owl:Ontology ;
-    vann:preferredNamespaceUri "http://www.re3data.org/schema/3-0#" ;
-    vann:preferredNamespacePrefix "r3d" ;
-    owl:versionInfo "3.0.0" ; 
-    dct:modified "2016-06-12" ;
-    rdfs:comment "This ontology is the result of the transformation of re3data XML schema into an OWL ontology. Further information is available here:...."@en ;		#todo
-    rdfs:label "re3data"@en ;
-	dct:license <http://purl.org/NET/rdflicense/cc-by4.0> ;#todo
-	dct:creator <http://wiki.dbpedia.org/Association/Persons/Freudenberg> ;	#todo
-	dct:publisher <http://re3data.org> ;
-    owl:imports <http://www.re3data.org/vocab>, <http://www.re3data.org/vocab/common>, <http://www.re3data.org/vocab/dfg> .		#TODO: change to specific vocabularies (delete r3voc!)
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://www.re3data.org/schema/3-0#country
+
+r3d:country rdf:type owl:AnnotationProperty ;
+            
+            rdfs:domain org:Site .
+
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://purl.org/spar/datacite/hasIdentifier
+
+datacite:hasIdentifier rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.re3data.org/schema/3-0#api
+
+r3d:api rdf:type owl:ObjectProperty ;
         
-############## Classes ###################
-r3d:Repository
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "The repository class."@en ;		#TODO
-    rdfs:label "Repository"@en ;
-    rdfs:subClassOf prov:Entity.   #TODO organizationalUnit???
-    
-r3d:Institution
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "The institution class."@en ;		#TODO
-    rdfs:label "Institution"@en ;
-    rdfs:subClassOf	prov:Organization, foaf:Organization.
-    
-r3d:Regulation
-    a owl:Class ;
-    rdfs:subClassOf dct:RightsStatement ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "A super-class for Policy, Access and License classes."@en ;		#TODO
-    rdfs:label "Regulation"@en .
-
-r3d:Access
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "Access describes limitation to the access of the repository."@en ;		#TODO
-    rdfs:label "Access"@en ;
-    rdfs:subClassOf	r3d:Regulation.
-
-r3d:License
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "License describes all licenses applying to this repository."@en ;		#TODO
-    rdfs:label "License"@en ;
-    rdfs:subClassOf	r3d:Regulation.
-    
-r3d:Policy
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "Policy provides all additinal policies in place for a repository, not covered by Access and License."@en ;		#TODO
-    rdfs:label "Policy"@en ;
-    rdfs:subClassOf	r3d:Regulation.
-    
-r3d:Api
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "Shallow description of an api which s in place to provide access to data in a repository."@en ;		#TODO
-    rdfs:label "Api"@en .
-    
-r3d:ReferenceDocument
-    a owl:Class ;
-    rdfs:subClassOf	foaf:Document ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "A general reference pointer for documents on the web like manuals, copyrights and similar documents."@en ;		#TODO
-    rdfs:label "reference document"@en ;
-    rdfs:subClassOf	foaf:Document.
+        rdfs:label "api reference"@en ;
         
-r3d:Responsibility  #TODO name is too general
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "This mediator points to a tpe of responsibility an institutions has in regard to a repository."@en ;		#TODO
-    rdfs:label "Responsibiliy"@en .
-    
-r3d:PublicationSupport
-    a owl:Class ;
-    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-    rdfs:comment "This mediator provides necessary information concerning publictions (like author identifiers etc.)"@en ;		#TODO
-    rdfs:label "publication support"@en .
-    
-    
-############## Object Properties ###################
-
-r3d:publicationSupport
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "publication support references"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:PublicationSupport .
-
-r3d:dataAccess
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "data access"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Access .
-
-r3d:dataUpload
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "data upload"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Access .
-
-r3d:databaseAccess
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "database access"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Access .
-
-r3d:dataLicense
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "data license"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:License .
-
-r3d:dataUploadLicense
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "data upload license"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:License .
-
-r3d:databaseLicense
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "database license"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:License .
-
-r3d:policy
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "policy"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Policy .
-
-r3d:api
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "api reference"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Api .
-
-r3d:metadataStandard
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "metadata standard document"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range foaf:Document .
-
-r3d:certificate
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "certificate document"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range foaf:Document .
-
-r3d:syndication
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "syndication documentation"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:ReferenceDocument .
-
-r3d:repositoryType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "repository type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3voc:RepositoryType .
-
-r3d:providerType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "provider type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3voc:ProviderType .
-
-r3d:repositoryLanguage
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "repository language"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range lvont:Language .	
-	
-r3d:contentType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "content type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3voc:ContentType .
-
-r3d:re3data
-	a owl:ObjectProperty ;
-	rdfs:subPropertyOf	datacite:hasIdentifier;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "re3data identifier"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range datacite:Identifier .	
-
-r3d:subject
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "subject identifier"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3common:ClassificationIdentifier .
-
-r3d:doi
-	a owl:ObjectProperty ;
-	rdfs:subPropertyOf	datacite:hasIdentifier;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "DOI identifier"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range datacite:Identifier .
-
-r3d:repositoryIdentifier
-	a owl:ObjectProperty ;
-	rdfs:subPropertyOf	datacite:hasIdentifier;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "repository identifier"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range datacite:Identifier .
-
-r3d:repositoryPost
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "repository post (of an agent)"@en ;
-	rdfs:comment "This position (post) should usually also be pointed to via org:hasPost from an pertaining r3d:Institution."@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range org:Post .
-
-r3d:institution
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "institution"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range r3d:Institution .
-	
-r3d:dataCatalog
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "data catalog"@en ;
-	rdfs:comment "Points out a dcat:Catalog with Datasets stored inside this Repository, with at least one Distribution"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range dcat:Catalog .
-	
-r3d:catalogRepository
-	a owl:ObjectProperty ;
-	owl:inverseOf r3d:dataCatalog	;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "catalog repository"@en ;
-	rdfs:comment "Points out a Repository where Datasets of a the Cataloge are stored with at least one Distribution"@en .
-	
-r3d:inRepository
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "in repository"@en ;
-	rdfs:comment "Specifies a Repository in which a Distribution is stored."@en ;
-	rdfs:domain dcat:Distribution ;
-	rdfs:range r3d:Repository .
-	
-r3d:reposits
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "reposits"@en ;
-	rdfs:comment "Points out a Dataset description of of data stored inside the Repository."@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range dcat:Dataset .
-
-r3d:institutionIdentifier
-	a owl:ObjectProperty ;
-	rdfs:subPropertyOf	datacite:hasIdentifier;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "institution identifier"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Institution ;
-	rdfs:range datacite:Identifier .
-
-r3d:responsibility
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "institution responsibility"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Institution ;
-	rdfs:range r3d:Responsibility .
-
-r3d:institutionType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "institution type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Institution ;
-	rdfs:range r3voc:InstitutionType .
-
-r3d:responsibilityType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "responsibility type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Responsibility ;
-	rdfs:range r3voc:ResponsibilityType .
-	
-r3d:country
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "country"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain org:Site ;
-	rdfs:range lvont:GeographicRegion .
-	
-r3d:apiType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "API type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Api ;
-	rdfs:range r3voc:ApiType .
-	
-r3d:policyType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "policy type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Policy ;
-	rdfs:range r3voc:PolicyType .
-	
-r3d:accessRestriction
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "access restriction"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Access ;
-	rdfs:range r3voc:AccessRestriction .
-	
-r3d:accessType
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "access type"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Access ;
-	rdfs:range r3voc:AccessType .
-	
-r3d:citationReference
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "citation reference"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:PublicationSupport ;
-	rdfs:range r3voc:CitationReference .
-	
-r3d:pidSystem
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "pid system"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:PublicationSupport ;
-	rdfs:range r3voc:PidSystem .
-	
-r3d:aidSystem
-	a owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "aid system"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:PublicationSupport ;
-	rdfs:range r3voc:AidSystem .
-	
-############## Datatype Properties ###################
-	
-r3d:startDate
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "start date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:date .
-		
-r3d:entryDate
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "entry date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:date .
-			
-r3d:closed
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "closed date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:date .
-	
-r3d:offline
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "offline date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:date .
-
-r3d:metrics	
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "metrics documentation"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range rdfs:Literal .
-
-r3d:size	#TODO the size property seems to be too broadly defined (not sur where to put this)
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "repository size statement"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range rdfs:Literal .
-	
-r3d:software
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "software"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range rdfs:Literal .
-		
-r3d:hasVersioning
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "has versioning"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:boolean .
-		
-r3d:hasQualityManagement
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "has quality management"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Respository ;
-	rdfs:range xsd:boolean .
-	
-r3d:responsibilityStartDate
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "responsibility start date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Responsibility ;
-	rdfs:range xsd:date .
-	
-r3d:responsibilityEndDate
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "responsibility end date"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Responsibility ;
-	rdfs:range xsd:date .
-		
-r3d:apiUrl
-	a owl:DatatypeProperty ;
-	rdfs:subPropertyOf	dct:references ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "API URL"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:Api ;
-	rdfs:range rdfs:Resource .
-			
-r3d:wsdlDocument 
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "WSDL Document"@en ;
-	rdfs:comment "XML document describing the API in Web Services Description Language."@en ;
-	rdfs:domain r3d:Api ;
-	rdfs:range rdfs:Resource .
-			
-r3d:citeGuidelineUrl
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "citation guidline URL"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:PublicationSupport ;
-	rdfs:range rdfs:Resource .
-	
-r3d:enhancedPubliction
-	a owl:DatatypeProperty ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "enhanced publication"@en ;
-	rdfs:comment "TODO"@en ;
-	rdfs:domain r3d:PublicationSupport ;
-	rdfs:range xsd:boolean .
-	
-############# Induviduals ################
+        rdfs:comment "TODO"@en ;
+        
+        rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+        
+        rdfs:range r3d:Api ;
+        
+        rdfs:domain r3d:Respository .
 
 
-r3d:R3dIdScheme a datacite:ResourceIdentifierScheme, owl:NamedIndividual ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	dct:title "re3data id scheme"@en ;
-    rdfs:label "re3data id scheme"@en ;
-	dct:description	"TODO"@en ;
-    rdfs:comment "TODO"@en .
-    
-r3d:ContactRole
-	a	org:Role, owl:NamedIndividual ;
-	rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
-	rdfs:label "contact role"@en ;
-	dct:title "contact role"@en ;
-	dct:description	"Represents a contact point (a Person or help desk...) of an institution or repository."@en ;
-	rdfs:comment "Points out the main contact of repository or institution."@en .
-	
-	#TODO add other roles if needed
-	
+
+###  http://www.re3data.org/schema/3-0#apiType
+
+r3d:apiType rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "API type"@en ;
+            
+            rdfs:comment "TODO"@en ;
+            
+            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+            
+            rdfs:domain r3d:Api ;
+            
+            rdfs:range r3voc:ApiType .
+
+
+
+###  http://www.re3data.org/schema/3-0#apiUrl
+
+r3d:apiUrl rdf:type owl:ObjectProperty ;
+           
+           rdfs:domain r3d:Api ;
+           
+           rdfs:range rdfs:Resource .
+
+
+
+###  http://www.re3data.org/schema/3-0#catalogRepository
+
+r3d:catalogRepository rdf:type owl:ObjectProperty ;
+                      
+                      rdfs:label "catalog repository"@en ;
+                      
+                      rdfs:comment "Points out a Repository where Datasets of a the Cataloge are stored with at least one Distribution"@en ;
+                      
+                      rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                      
+                      owl:inverseOf r3d:dataCatalog .
+
+
+
+###  http://www.re3data.org/schema/3-0#certificate
+
+r3d:certificate rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "certificate document"@en ;
+                
+                rdfs:comment "TODO"@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                
+                rdfs:domain r3d:Respository ;
+                
+                rdfs:range foaf:Document .
+
+
+
+###  http://www.re3data.org/schema/3-0#country
+
+r3d:country rdf:type owl:ObjectProperty ;
+            
+            rdfs:range lvont:GeographicRegion .
+
+
+
+###  http://www.re3data.org/schema/3-0#dataCatalog
+
+r3d:dataCatalog rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "data catalog"@en ;
+                
+                rdfs:comment "Points out a dcat:Catalog with Datasets stored inside this Repository, with at least one Distribution"@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                
+                rdfs:domain r3d:Respository ;
+                
+                rdfs:range dcat:Catalog .
+
+
+
+###  http://www.re3data.org/schema/3-0#doi
+
+r3d:doi rdf:type owl:ObjectProperty ;
+        
+        rdfs:label "DOI identifier"@en ;
+        
+        rdfs:comment "TODO"@en ;
+        
+        rdfs:range datacite:Identifier ;
+        
+        rdfs:subPropertyOf datacite:hasIdentifier ;
+        
+        rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+        
+        rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#institution
+
+r3d:institution rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "institution"@en ;
+                
+                rdfs:comment "TODO"@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                
+                rdfs:range r3d:Institution ;
+                
+                rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#institutionIdentifier
+
+r3d:institutionIdentifier rdf:type owl:ObjectProperty ;
+                          
+                          rdfs:label "institution identifier"@en ;
+                          
+                          rdfs:comment "TODO"@en ;
+                          
+                          rdfs:range datacite:Identifier ;
+                          
+                          rdfs:subPropertyOf datacite:hasIdentifier ;
+                          
+                          rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                          
+                          rdfs:domain r3d:Institution .
+
+
+
+###  http://www.re3data.org/schema/3-0#institutionType
+
+r3d:institutionType rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:label "institution type"@en ;
+                    
+                    rdfs:comment "TODO"@en ;
+                    
+                    rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                    
+                    rdfs:domain r3d:Institution ;
+                    
+                    rdfs:range r3voc:InstitutionType .
+
+
+
+###  http://www.re3data.org/schema/3-0#metadataStandard
+
+r3d:metadataStandard rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:label "metadata standard document"@en ;
+                     
+                     rdfs:comment "TODO"@en ;
+                     
+                     rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                     
+                     rdfs:domain r3d:Respository ;
+                     
+                     rdfs:range foaf:Document .
+
+
+
+###  http://www.re3data.org/schema/3-0#pidSystem
+
+r3d:pidSystem rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "pid system"@en ;
+              
+              rdfs:comment "TODO"@en ;
+              
+              rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+              
+              rdfs:domain r3d:PublicationSupport ;
+              
+              rdfs:range r3voc:PidSystem .
+
+
+
+###  http://www.re3data.org/schema/3-0#providerType
+
+r3d:providerType rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "provider type"@en ;
+                 
+                 rdfs:comment "TODO"@en ;
+                 
+                 rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                 
+                 rdfs:domain r3d:Respository ;
+                 
+                 rdfs:range r3voc:ProviderType .
+
+
+
+###  http://www.re3data.org/schema/3-0#repositoryContact
+
+r3d:repositoryContact rdf:type owl:ObjectProperty ;
+                      
+                      rdfs:label "repository contact"^^xsd:string .
+
+
+
+###  http://www.re3data.org/schema/3-0#repositoryIdentifier
+
+r3d:repositoryIdentifier rdf:type owl:ObjectProperty ;
+                         
+                         rdfs:label "repository identifier"@en ;
+                         
+                         rdfs:comment "TODO"@en ;
+                         
+                         rdfs:range datacite:Identifier ;
+                         
+                         rdfs:subPropertyOf datacite:hasIdentifier ;
+                         
+                         rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                         
+                         rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#repositoryLanguage
+
+r3d:repositoryLanguage rdf:type owl:ObjectProperty ;
+                       
+                       rdfs:label "repository language"@en ;
+                       
+                       rdfs:comment "TODO"@en ;
+                       
+                       rdfs:range lvont:Language ;
+                       
+                       rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                       
+                       rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#repositoryType
+
+r3d:repositoryType rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "repository type"@en ;
+                   
+                   rdfs:comment "TODO"@en ;
+                   
+                   rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                   
+                   rdfs:domain r3d:Respository ;
+                   
+                   rdfs:range r3voc:RepositoryType .
+
+
+
+###  http://www.re3data.org/schema/3-0#responsibility
+
+r3d:responsibility rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "institution responsibility"@en ;
+                   
+                   rdfs:comment "TODO"@en ;
+                   
+                   rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                   
+                   rdfs:domain r3d:Institution ;
+                   
+                   rdfs:range r3d:Responsibility .
+
+
+
+###  http://www.re3data.org/schema/3-0#responsibilityType
+
+r3d:responsibilityType rdf:type owl:ObjectProperty ;
+                       
+                       rdfs:label "responsibility type"@en ;
+                       
+                       rdfs:comment "TODO"@en ;
+                       
+                       rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                       
+                       rdfs:domain r3d:Responsibility ;
+                       
+                       rdfs:range r3voc:ResponsibilityType .
+
+
+
+###  http://www.re3data.org/schema/3-0#subject
+
+r3d:subject rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "subject identifier"@en ;
+            
+            rdfs:comment "TODO"@en ;
+            
+            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+            
+            rdfs:domain r3d:Respository ;
+            
+            rdfs:range r3common:ClassificationIdentifier .
+
+
+
+###  http://www.re3data.org/schema/3-0#wsdlDocument
+
+r3d:wsdlDocument rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:domain r3d:Api ;
+                 
+                 rdfs:range rdfs:Resource .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://purl.org/dc/terms/date
+
+dct:date rdf:type owl:DatatypeProperty .
+
+
+
+###  http://purl.org/dc/terms/references
+
+dct:references rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.re3data.org/schema/3-0#apiUrl
+
+r3d:apiUrl rdf:type owl:DatatypeProperty ;
+           
+           rdfs:subPropertyOf dct:references .
+
+
+
+###  http://www.re3data.org/schema/3-0#citeGuidelineUrl
+
+r3d:citeGuidelineUrl rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.re3data.org/schema/3-0#closed
+
+r3d:closed rdf:type owl:DatatypeProperty ;
+           
+           rdfs:label "closed date"@en ;
+           
+           rdfs:comment "TODO"@en ;
+           
+           rdfs:subPropertyOf dct:date ;
+           
+           rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+           
+           rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#enhancedPubliction
+
+r3d:enhancedPubliction rdf:type owl:DatatypeProperty ;
+                       
+                       rdfs:label "enhanced publication"@en ;
+                       
+                       rdfs:comment "TODO"@en ;
+                       
+                       rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                       
+                       rdfs:domain r3d:PublicationSupport ;
+                       
+                       rdfs:range xsd:boolean .
+
+
+
+###  http://www.re3data.org/schema/3-0#entryDate
+
+r3d:entryDate rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "entry date"@en ;
+              
+              rdfs:comment "TODO"@en ;
+              
+              rdfs:subPropertyOf dct:date ;
+              
+              rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+              
+              rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#hasQualityManagement
+
+r3d:hasQualityManagement rdf:type owl:DatatypeProperty ;
+                         
+                         rdfs:label "has quality management"@en ;
+                         
+                         rdfs:comment "TODO"@en ;
+                         
+                         rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                         
+                         rdfs:domain r3d:Respository ;
+                         
+                         rdfs:range xsd:boolean .
+
+
+
+###  http://www.re3data.org/schema/3-0#hasVersioning
+
+r3d:hasVersioning rdf:type owl:DatatypeProperty ;
+                  
+                  rdfs:label "has versioning"@en ;
+                  
+                  rdfs:comment "TODO"@en ;
+                  
+                  rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                  
+                  rdfs:domain r3d:Respository ;
+                  
+                  rdfs:range xsd:boolean .
+
+
+
+###  http://www.re3data.org/schema/3-0#metrics
+
+r3d:metrics rdf:type owl:DatatypeProperty ;
+            
+            rdfs:label "metrics documentation"@en ;
+            
+            rdfs:comment "TODO"@en ;
+            
+            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+            
+            rdfs:domain r3d:Respository ;
+            
+            rdfs:range rdfs:Literal .
+
+
+
+###  http://www.re3data.org/schema/3-0#offline
+
+r3d:offline rdf:type owl:DatatypeProperty ;
+            
+            rdfs:label "offline date"@en ;
+            
+            rdfs:comment "TODO"@en ;
+            
+            rdfs:subPropertyOf dct:date ;
+            
+            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+            
+            rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#responsibilityEndDate
+
+r3d:responsibilityEndDate rdf:type owl:DatatypeProperty ;
+                          
+                          rdfs:label "responsibility end date"@en ;
+                          
+                          rdfs:comment "TODO"@en ;
+                          
+                          rdfs:subPropertyOf dct:date ;
+                          
+                          rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                          
+                          rdfs:domain r3d:Responsibility .
+
+
+
+###  http://www.re3data.org/schema/3-0#responsibilityStartDate
+
+r3d:responsibilityStartDate rdf:type owl:DatatypeProperty ;
+                            
+                            rdfs:label "responsibility start date"@en ;
+                            
+                            rdfs:comment "TODO"@en ;
+                            
+                            rdfs:subPropertyOf dct:date ;
+                            
+                            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+                            
+                            rdfs:domain r3d:Responsibility .
+
+
+
+###  http://www.re3data.org/schema/3-0#size
+
+r3d:size rdf:type owl:DatatypeProperty ;
+         
+         rdfs:label "repository size statement"@en ;
+         
+         rdfs:comment "TODO"@en ;
+         
+         rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+         
+         rdfs:domain r3d:Respository ;
+         
+         rdfs:range rdfs:Literal .
+
+
+
+###  http://www.re3data.org/schema/3-0#software
+
+r3d:software rdf:type owl:DatatypeProperty ;
+             
+             rdfs:label "software"@en ;
+             
+             rdfs:comment "TODO"@en ;
+             
+             rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+             
+             rdfs:domain r3d:Respository ;
+             
+             rdfs:range rdfs:Literal .
+
+
+
+###  http://www.re3data.org/schema/3-0#startDate
+
+r3d:startDate rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "start date"@en ;
+              
+              rdfs:comment "TODO"@en ;
+              
+              rdfs:subPropertyOf dct:date ;
+              
+              rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> ;
+              
+              rdfs:domain r3d:Respository .
+
+
+
+###  http://www.re3data.org/schema/3-0#wsdlDocument
+
+r3d:wsdlDocument rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://lexvo.org/ontology#GeographicRegion
+
+lvont:GeographicRegion rdf:type owl:Class .
+
+
+
+###  http://lexvo.org/ontology#Language
+
+lvont:Language rdf:type owl:Class .
+
+
+
+###  http://purl.org/spar/datacite/Identifier
+
+datacite:Identifier rdf:type owl:Class .
+
+
+
+###  http://purl.org/spar/datacite/ResourceIdentifierScheme
+
+datacite:ResourceIdentifierScheme rdf:type owl:Class .
+
+
+
+###  http://www.re3data.org/schema/3-0#Api
+
+r3d:Api rdf:type owl:Class ;
+        
+        rdfs:label "Api"@en ;
+        
+        rdfs:comment "Shallow description of an api which s in place to provide access to data in a repository."@en ;
+        
+        rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#Institution
+
+r3d:Institution rdf:type owl:Class ;
+                
+                rdfs:label "Institution"@en ;
+                
+                rdfs:subClassOf prov:Organization ,
+                                foaf:Organization ;
+                
+                rdfs:comment "The institution class."@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#PublicationSupport
+
+r3d:PublicationSupport rdf:type owl:Class ;
+                       
+                       rdfs:label "publication support"@en ;
+                       
+                       rdfs:comment "This mediator provides necessary information concerning publictions (like author identifiers etc.)"@en ;
+                       
+                       rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#ReferenceDocument
+
+r3d:ReferenceDocument rdf:type owl:Class ;
+                      
+                      rdfs:label "reference document"@en ;
+                      
+                      rdfs:subClassOf foaf:Document ;
+                      
+                      rdfs:comment "A general reference pointer for documents on the web like manuals, copyrights and similar documents."@en ;
+                      
+                      rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#Repository
+
+r3d:Repository rdf:type owl:Class ;
+               
+               rdfs:label "Repository"@en ;
+               
+               rdfs:subClassOf prov:Entity ;
+               
+               rdfs:comment "The repository class."@en ;
+               
+               rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#Responsibility
+
+r3d:Responsibility rdf:type owl:Class ;
+                   
+                   rdfs:label "Responsibiliy"@en ;
+                   
+                   rdfs:comment "This mediator points to a tpe of responsibility an institutions has in regard to a repository."@en ;
+                   
+                   rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#Respository
+
+r3d:Respository rdf:type owl:Class .
+
+
+
+###  http://www.re3data.org/vocab/ProviderType
+
+r3voc:ProviderType rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#Resource
+
+rdfs:Resource rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/dcat#Catalog
+
+dcat:Catalog rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/org#Role
+
+org:Role rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Entity
+
+prov:Entity rdf:type owl:Class .
+
+
+
+###  http://www.w3.org/ns/prov#Organization
+
+prov:Organization rdf:type owl:Class .
+
+
+
+###  http://xmlns.com/foaf/0.1/Document
+
+foaf:Document rdf:type owl:Class .
+
+
+
+###  http://xmlns.com/foaf/0.1/Organization
+
+foaf:Organization rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://www.re3data.org/schema/3-0#ContactRole
+
+r3d:ContactRole rdf:type owl:NamedIndividual ,
+                         org:Role ;
+                
+                rdfs:label "contact role"@en ;
+                
+                rdfs:comment "Points out the main contact of repository or institution."@en ;
+                
+                dct:description "Represents a contact point (a Person or help desk...) of an institution or repository."@en ;
+                
+                dct:title "contact role"@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+###  http://www.re3data.org/schema/3-0#R3dIdScheme
+
+r3d:R3dIdScheme rdf:type datacite:ResourceIdentifierScheme ,
+                         owl:NamedIndividual ;
+                
+                rdfs:label "re3data id scheme"@en ;
+                
+                dct:description "TODO"@en ;
+                
+                rdfs:comment "TODO"@en ;
+                
+                dct:title "re3data id scheme"@en ;
+                
+                rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+
+
+#################################################################
+#
+#    Annotations
+#
+#################################################################
+
+
+r3d:wsdlDocument rdfs:label "WSDL Document"@en ;
+                 
+                 rdfs:comment "XML document describing the API in Web Services Description Language."@en ;
+                 
+                 rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+r3d:apiUrl rdfs:label "API URL"@en ;
+           
+           rdfs:comment "TODO"@en ;
+           
+           rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+r3d:country rdfs:label "country"@en ;
+            
+            rdfs:comment "TODO"@en ;
+            
+            rdfs:isDefinedBy <http://www.re3data.org/schema/3-0> .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+
